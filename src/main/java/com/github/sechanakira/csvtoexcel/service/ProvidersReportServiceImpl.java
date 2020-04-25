@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class ProvidersReportServiceImpl implements ProvidersReportService {
     @Override
     public String generateReport(final Request request) {
-        try {
+        try (final XSSFWorkbook workbook = new XSSFWorkbook()) {
             final Path output = Paths.get(request.getOutputPath());
             if (!Files.exists(output)) {
                 Files.createFile(output);
@@ -39,7 +39,6 @@ public class ProvidersReportServiceImpl implements ProvidersReportService {
                     ))
                     .collect(Collectors.toList());
 
-            final XSSFWorkbook workbook = new XSSFWorkbook();
 
             for (int i = 0; i < providerReportData.size(); i++) {
                 final ProviderReportData data = providerReportData.get(i);
@@ -47,6 +46,23 @@ public class ProvidersReportServiceImpl implements ProvidersReportService {
                 XSSFSheet sheet = workbook.getSheet(sheetName);
                 if (sheet == null) {
                     sheet = workbook.createSheet(sheetName);
+
+                    final Row headers = sheet.createRow(0);
+
+                    final Cell cell1 = headers.createCell(0);
+                    cell1.setCellValue("ACCOUNT NUMBER");
+
+                    final Cell cell2 = headers.createCell(1);
+                    cell2.setCellValue("SALE DATE");
+
+                    final Cell cell3 = headers.createCell(2);
+                    cell3.setCellValue("LOAN TYPE");
+
+                    final Cell cell4 = headers.createCell(3);
+                    cell4.setCellValue("STATUS");
+
+                    final Cell cell5 = headers.createCell(4);
+                    cell5.setCellValue("ACTIVATION DATE");
                 }
                 final Row row = sheet.createRow(sheet.getLastRowNum() + 1);
 
@@ -68,7 +84,6 @@ public class ProvidersReportServiceImpl implements ProvidersReportService {
 
             final FileOutputStream outputStream = new FileOutputStream(request.getOutputPath());
             workbook.write(outputStream);
-            workbook.close();
 
         } catch (IOException ioe) {
             ioe.printStackTrace();
