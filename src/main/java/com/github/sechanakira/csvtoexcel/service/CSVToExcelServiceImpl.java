@@ -2,7 +2,7 @@ package com.github.sechanakira.csvtoexcel.service;
 
 import com.github.sechanakira.csvtoexcel.exception.GeneralException;
 import com.github.sechanakira.csvtoexcel.exception.OutputFileNotWritable;
-import com.github.sechanakira.csvtoexcel.model.ConversionRequest;
+import com.github.sechanakira.csvtoexcel.model.Request;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 public class CSVToExcelServiceImpl implements CSVToExcelService {
     @Override
-    public String csvToExcel(final ConversionRequest request) {
+    public String csvToExcel(final Request request) {
         try (final XSSFWorkbook workbook = new XSSFWorkbook()) {
             final Path output = Paths.get(request.getOutputPath());
             if (!Files.exists(output)) {

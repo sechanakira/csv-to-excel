@@ -1,6 +1,6 @@
 package com.github.sechanakira.csvtoexcel.api;
 
-import com.github.sechanakira.csvtoexcel.model.ConversionRequest;
+import com.github.sechanakira.csvtoexcel.model.Request;
 import com.github.sechanakira.csvtoexcel.service.CSVToExcelService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +20,7 @@ public class CSVToExcelServiceEndpoint {
 
     @PostMapping
     @ResponseBody
-    public String convert(@RequestBody final ConversionRequest request) {
+    public String convert(@RequestBody final Request request) {
         return service.csvToExcel(request);
     }
 }
